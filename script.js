@@ -2,7 +2,45 @@
 window.onload = function() {
     loadTasks();
   };
+  function openViewTab() {
+    const saved = localStorage.getItem("tasks");
+    const tasks = saved ? JSON.parse(saved) : [];
   
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(`
+      <html>
+      <head>
+        <title>Saved To-Do Tasks</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+          }
+          h1 {
+            text-align: center;
+          }
+          ul {
+            list-style: none;
+            padding: 0;
+          }
+          li {
+            background: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>📋 Saved Tasks</h1>
+        <ul>
+          ${tasks.map(task => `<li>${task}</li>`).join('')}
+        </ul>
+      </body>
+      </html>
+    `);
+    newWindow.document.close();
+  }
   function addTask() {
     const input = document.getElementById("taskInput");
     const task = input.value.trim();
