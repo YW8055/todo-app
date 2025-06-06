@@ -34,8 +34,26 @@ function loadTasks() {
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
     li.textContent = task;
+
+    // Add delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑️ Delete";
+    deleteBtn.style.marginLeft = "10px";
+    deleteBtn.onclick = function () {
+      deleteTask(index);
+    };
+
+    li.appendChild(deleteBtn);
+
     taskList.appendChild(li);
   });
+}
+
+function deleteTask(index){
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.splice(index, 1); // remove 1 item at the given index
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  loadTasks();
 }
 
 function openViewTab() {
@@ -63,3 +81,6 @@ function openViewTab() {
   `);
   newWindow.document.close();
 }
+
+// Load existing tasks on page load
+window.onload = loadTasks;
